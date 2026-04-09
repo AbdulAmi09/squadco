@@ -1,7 +1,8 @@
 import { createClient } from "./supabase/server";
 
 function getApiUrl() {
-  return process.env.NEXT_PUBLIC_API_URL || process.env.APP_BASE_URL || "http://localhost:3000";
+  const raw = process.env.NEXT_PUBLIC_API_URL || process.env.APP_BASE_URL || "http://localhost:3000";
+  return raw.endsWith("/api") ? raw.slice(0, -4) : raw;
 }
 
 export async function callInternalApi<T>(path: string, init?: RequestInit): Promise<T> {

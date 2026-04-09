@@ -7,6 +7,13 @@ import { redirect } from "next/navigation";
 import { callInternalApi } from "../lib/internal-api";
 import { createClient } from "../lib/supabase/server";
 
+function isRedirectError(error: unknown) {
+  if (typeof error !== "object" || error === null) return false;
+  const digest = "digest" in error ? String((error as { digest?: unknown }).digest || "") : "";
+  const message = "message" in error ? String((error as { message?: unknown }).message || "") : "";
+  return digest.startsWith("NEXT_REDIRECT") || message === "NEXT_REDIRECT";
+}
+
 export async function signInAction(formData: FormData) {
   const email = String(formData.get("email") || "");
   const password = String(formData.get("password") || "");
@@ -158,6 +165,7 @@ export async function enableTotpAction(formData: FormData) {
     });
     redirect(next);
   } catch (error) {
+    if (isRedirectError(error)) throw error;
     redirect(`/2fa?error=${encodeURIComponent(error instanceof Error ? error.message : "Failed to enable 2FA")}`);
   }
 }
@@ -179,6 +187,7 @@ export async function verifyTotpAction(formData: FormData) {
     });
     redirect(next);
   } catch (error) {
+    if (isRedirectError(error)) throw error;
     redirect(`/2fa?challenge=1&next=${encodeURIComponent(next)}&error=${encodeURIComponent(error instanceof Error ? error.message : "Invalid code")}`);
   }
 }
@@ -195,6 +204,7 @@ export async function disableTotpAction(formData: FormData) {
     cookieStore.set("tl_2fa_verified", "", { expires: new Date(0), path: "/" });
     redirect("/2fa?success=Two-factor%20authentication%20disabled");
   } catch (error) {
+    if (isRedirectError(error)) throw error;
     redirect(`/2fa?error=${encodeURIComponent(error instanceof Error ? error.message : "Failed to disable 2FA")}`);
   }
 }
@@ -385,7 +395,8 @@ export async function acceptInviteAction(formData: FormData) {
     password: String(formData.get("password") || "")
   };
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || process.env.APP_BASE_URL || "http://localhost:3000";
+  const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || process.env.APP_BASE_URL || "http://localhost:3000";
+  const apiUrl = rawApiUrl.endsWith("/api") ? rawApiUrl.slice(0, -4) : rawApiUrl;
 
   try {
     const response = await fetch(`${apiUrl}/api/public/invitations/accept`, {
