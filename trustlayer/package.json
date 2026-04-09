@@ -1,0 +1,21 @@
+{
+  "name": "trustlayer",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm --workspace @trustlayer/web run dev",
+    "dev:api": "npm --workspace @trustlayer/api run dev",
+    "dev:ai": "cd apps/ai-engine && uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces",
+    "check": "npm run typecheck --workspaces"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}

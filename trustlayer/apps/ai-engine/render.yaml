@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: trustlayer-ai-engine
+    env: python
+    plan: standard
+    rootDir: apps/ai-engine
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT --workers 4
+    healthCheckPath: /health
+  - type: worker
+    name: trustlayer-ai-worker
+    env: python
+    plan: starter
+    rootDir: apps/ai-engine
+    buildCommand: pip install -r requirements.txt
+    startCommand: python worker.py
+  - type: redis
+    name: trustlayer-ai-redis
+    plan: starter

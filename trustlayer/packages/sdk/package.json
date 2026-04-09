@@ -1,0 +1,35 @@
+{
+  "name": "@hamduktrustlayerai/sdk",
+  "version": "0.1.2",
+  "description": "TypeScript SDK for TrustLayer AI transaction risk, trust scoring, credit analysis, and assistant APIs.",
+  "license": "MIT",
+  "homepage": "https://trustlayerai.labs.hamduk.com.ng",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AbdulAmi09/squadco.git"
+  },
+  "bugs": {
+    "email": "trustlayerai@hamduk.com.ng"
+  },
+  "keywords": [
+    "trustlayer",
+    "fintech",
+    "banking",
+    "fraud-detection",
+    "risk-scoring",
+    "credit-scoring",
+    "financial-ai",
+    "typescript-sdk"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "echo sdk lint placeholder"
+  }
+}

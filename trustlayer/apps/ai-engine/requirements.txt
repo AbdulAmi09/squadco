@@ -1,0 +1,12 @@
+fastapi==0.115.8
+uvicorn==0.34.0
+pydantic==2.10.6
+httpx==0.28.1
+openai==1.61.1
+pandas==2.2.3
+pdfplumber==0.11.5
+python-multipart==0.0.20
+PyMuPDF==1.25.3
+structlog==25.1.0
+redis==5.2.1
+sentry-sdk==2.18.0
